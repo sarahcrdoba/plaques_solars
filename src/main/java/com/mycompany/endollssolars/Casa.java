@@ -17,8 +17,8 @@ public class Casa {
     private float superficie;
     private String interruptor = "Activat";
     private ArrayList<Placa> placas = new ArrayList();
-    private ArrayList <Aparell> aparells = new ArrayList();
-    
+    private ArrayList<Aparell> aparells = new ArrayList();
+
     public Casa(String nif, String nom, float superficie) {
         this.nif = nif;
         this.nom = nom;
@@ -28,28 +28,59 @@ public class Casa {
     public String getNif() {
         return this.nif;
     }
-    
+
     public String getNom() {
         return this.nom;
     }
-    
+
     public float getSuperficie() {
         return this.superficie;
     }
-    
+
     public String getInterruptor() {
         return this.interruptor;
     }
-    
+
     public void addPlaca(Placa placa) {
         placas.add(placa);
     }
-    
+
     public void addAparell(Aparell aparell) {
         aparells.add(aparell);
     }
-    
+
     public void turnOnCasa(String estado) {
-        this.interruptor = estado;        
+        this.interruptor = estado;
     }
+
+    public void findAparato(String descripcio, String comando) {
+        for (Aparell aparato : aparells) {
+            if (aparato.getDescripcio() == descripcio) {
+                if (comando == "onAparell") {
+                    aparato.turnOnAparell("Activat");
+                }
+                else if (comando == "offAparell") {
+                    aparato.turnOffAparell("Desactivat");
+                }
+
+            }
+        }
+    }
+    
+    public void listCasa() {
+        double resta;
+        resta = superficie;
+        for (Placa unaPlaca: placas) {
+           resta = resta  -  unaPlaca.getSuperficie();          
+        }
+        
+        System.out.println("Client: " + nif + "-" + nom);
+        System.out.println("Superfície de teulada: " + superficie);
+        System.out.println("Superfície disponible: " + resta);
+        System.out.println("Interruptor general: " + interruptor);
+        System.out.println("Plaques solars instal·lades: " + placas.size());
+        System.out.println("Aparells registrats: " + aparells.size());
+
+    }
+
 }

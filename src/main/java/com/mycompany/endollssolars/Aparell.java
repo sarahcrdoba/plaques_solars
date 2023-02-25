@@ -9,24 +9,33 @@ package com.mycompany.endollssolars;
  * @author sarah
  */
 public class Aparell {
+
     private String descripcio;
     private float consum;
     private String interruptor = "Activat";
-    
+
     public Aparell(String descripcio, float consum) {
         this.descripcio = descripcio;
-        this.consum = consum;           
+        this.consum = consum;
     }
-    
+
     public String getDescripcio() {
-    return this.descripcio;
-}
-    
+        return this.descripcio;
+    }
+
     public float getConsum() {
         return this.consum;
     }
-    
+
     public String getInterruptor() {
         return this.interruptor;
+    }
+
+    public void turnOnAparell(String estado) {
+        this.interruptor = estado;
+    }
+    
+    public void turnOffAparell(String estado) {
+        this.interruptor = estado;
     }
 }
