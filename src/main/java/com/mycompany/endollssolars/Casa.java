@@ -42,6 +42,7 @@ public class Casa {
     }
 
     public void addPlaca(Placa placa) {
+        System.out.println("placa añadida");
         placas.add(placa);
     }
 
@@ -55,11 +56,11 @@ public class Casa {
 
     public void findAparato(String descripcio, String comando) {
         for (Aparell aparato : aparells) {
-            if (aparato.getDescripcio() == descripcio) {
-                if (comando == "onAparell") {
+            if (aparato.getDescripcio().equalsIgnoreCase(descripcio)) {
+                if (comando.equalsIgnoreCase("onAparell")) {
                     aparato.turnOnAparell("Activat");
                 }
-                else if (comando == "offAparell") {
+                else if (comando.equalsIgnoreCase("offAparell")) {
                     aparato.turnOffAparell("Desactivat");
                 }
 
@@ -74,7 +75,7 @@ public class Casa {
            resta = resta  -  unaPlaca.getSuperficie();          
         }
         
-        System.out.println("Client: " + nif + "-" + nom);
+        System.out.println("Client: " + nif + " - " + nom);
         System.out.println("Superfície de teulada: " + superficie);
         System.out.println("Superfície disponible: " + resta);
         System.out.println("Interruptor general: " + interruptor);

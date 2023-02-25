@@ -25,6 +25,7 @@ public class EndollsSolars {
             comando = Consola.readLine();
             String[] parts = comando.split(" ");
             String orden = parts[0];
+
             
             switch (orden) {
                 case "addCasa":
@@ -41,7 +42,7 @@ public class EndollsSolars {
                     Placa añadir = new Placa(part1, part2, parte3);
                     
                     for (Casa cliente : casas) {
-                        if (cliente.getNif() == nif) {
+                        if (nif.equalsIgnoreCase(cliente.getNif())) {
                             cliente.addPlaca(añadir);
                         }
                     }
@@ -52,7 +53,7 @@ public class EndollsSolars {
                     Aparell nuevo = new Aparell(parts[2], consum);
                     
                     for (Casa cliente : casas) {
-                        if (cliente.getNif() == parts[1]) {
+                        if (parts[1].equalsIgnoreCase(cliente.getNif())) {
                             cliente.addAparell(nuevo);
                         }
                     }
@@ -60,8 +61,9 @@ public class EndollsSolars {
                 
                 case "onCasa":
                     for (Casa cliente : casas) {
-                        if (cliente.getNif() == parts[1]) {
-                            if (cliente.getInterruptor() == "Activat") {
+                        if (parts[1].equalsIgnoreCase(cliente.getNif())) {
+                            System.out.println(cliente.getInterruptor());
+                            if ((cliente.getInterruptor()).equalsIgnoreCase("Activat")) {
                                 System.out.println("ERROR: La casa ja té l'interruptor encès.");
                             } else {
                                 cliente.turnOnCasa("Activat");
@@ -72,7 +74,7 @@ public class EndollsSolars {
                 
                 case "onAparell":                    
                     for (Casa cliente : casas) {
-                        if (cliente.getNif() == parts[1]) {
+                        if  (parts[1].equalsIgnoreCase(cliente.getNif())) {
                             cliente.findAparato(parts[2], parts[0]);
                         }
                     }
@@ -80,30 +82,34 @@ public class EndollsSolars {
                 
                 case "offAparell":
                     for (Casa cliente : casas) {
-                        if (cliente.getNif() == parts[1]) {
+                        if  (parts[1].equalsIgnoreCase(cliente.getNif())) {
                             cliente.findAparato(parts[2], parts[0]);
                         }
                     }
                     break;
                     
                 case "list":
+                    int contador = 0;
                     System.out.println("--- Endolls Solars, S.L. ---");
                     System.out.println("Cases enregistrades: " + casas.size());
+                    System.out.println(" ");
                     for (Casa cliente: casas) {
+                        contador = contador +1;
+                        System.out.println("Casa" + contador);
                         cliente.listCasa();
+                        System.out.println(" ");
                     }
                     break;
                     
                 case "info":
                     for (Casa cliente: casas) {
-                        if (cliente.getNif() == parts[1]) {
+                        if  (parts[1].equalsIgnoreCase(cliente.getNif())) {
                             cliente.listCasa();
                         }
                     }
                     break;
-            }
-            
-        } while (comando != "quit");
+            }           
+        } while (!comando.equalsIgnoreCase("quit"));
         
     }
     
