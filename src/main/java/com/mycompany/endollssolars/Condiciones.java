@@ -3,44 +3,44 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package com.mycompany.endollssolars;
-import java.util.ArrayList;
-import java.util.List;
 /**
  *
  * @author sarah
  */
 public class Condiciones {
-    private ArrayList <String> error = new ArrayList();
+
+    // errors casa
+    public static final String CASA_ENCESA = "ERROR: La casa ja té l'interruptor encès.";
+    public static final String SUPERFICIE_CASA = "ERROR: Superficie incorrecta. Ha de ser més gran de 10.";
+    public static final String CASA_REGISTRADA = "ERROR: Ja hi ha una casa registrada amb aquest nif";
+    public static final String CASA_NOREGISTRADA = "ERROR: No hi ha cap casa registrada amb aquest nif.";
     
-    private ArrayList <String> ok = new ArrayList();
+    // errors placa
+    public static final String SUPERFICIE_PLACA = "ERROR: Superfície incorrecta. Ha de ser més gran de 0.";
+    public static final String PREU_PLACA = "ERROR: Preu incorrecte. Ha de ser més gran de 0.";
+    public static final String ESPAI_PLACA = "ERROR: No hi ha espai disponible per a instal·lar aquesta placa.";
     
-    public Condiciones() {
-        this.error.addAll(List.of("ERROR: Número de paràmetres incorrecte d'ús.\nÚs: addCasa [nif] [nom] [superficie]", "ERROR: Superficie incorrecta. Ha de ser més gran de 10.", "ERROR: Ja hi ha una casa registrada amb aquest nif", 
-                "ERROR: No hi ha cap casa registrada amb aquest nif.", "ERROR: Superfície incorrecta. Ha de ser més gran de 0.", "ERROR: No hi ha espai disponible per a instal·lar aquesta placa.",
-                "ERROR: Preu incorrecte. Ha de ser més gran de 0.", "ERROR: Potència incorrecte. Ha de ser més gran de 0.", "ERROR: Ja existeix un aparell amb aquesta descripció a la casa indicada.",
-                "ERROR: La casa ja té l'interruptor encès.", "ERROR: No hi ha cap aparell registrat amb aquesta descripció a la casa indicada.", "ERROR: L'aparell ja està encès.",
-                "ERROR: No es pot encendre l'aparell. L'interruptor general està apagat.", "ERROR: Han saltat els ploms. La casa ha quedat completament apagada.", "ERROR: L'aparell ja està apagat.",
-                "ERROR: Número de paràmetres incorrecte.\nÚs: addPlaca [nif] [superficie] [preu] [potència]", "ERROR: Número de paràmetres incorrecte.\nÚs: addAparell [nif] [descripció] [potència]",
-                "ERROR: Número de paràmetres incorrecte.\nÚs: onCasa [nif]", "ERROR: Número de paràmetres incorrecte \nÚs: onAparell [nif] [descripció aparell]", "ERROR: Número de paràmetres incorrecte.\nÚs: offAparell [nif] [descripció aparell]",
-                "ERROR: Número de paràmetres incorrecte.\nÚs: list", "ERROR: Número de paràmetres incorrecte.\nÚs: info [nif]", "ERROR: Número de paràmetres incorrecte.\nÚs: quit"));
-        
-        this.ok.addAll(List.of("OK: Casa registrada.", "OK: Placa afegida a la casa.", "OK: Aparell afegit a la casa.", "OK: Aparell encès.", "OK: Aparell apagat."));
-    }
+    // errors aparell
+    public static final String APARELL_REGISTRAT = "ERROR: Ja existeix un aparell amb aquesta descripció a la casa indicada.";
+    public static final String APARELL_NOREGISTRAT = "ERROR: No hi ha cap aparell registrat amb aquesta descripció a la casa indicada.";
+    public static final String APARELL_ENCES = "ERROR: L'aparell ja està encès.";
+    public static final String APARELL_APAGAT =  "ERROR: L'aparell ja està apagat.";
     
+    // errors potencia
+    public static final String INTERRUPTOR_APAGAT = "ERROR: No es pot encendre l'aparell. L'interruptor general està apagat.";
+    public static final String PLOMS_SALTATS = "ERROR: Han saltat els ploms. La casa ha quedat completament apagada.";
+    public static final String POTENCIA = "ERROR: Potència incorrecte. Ha de ser més gran de 0.";
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+    // errors parametres
+    public static final String PARAMETRES = "ERROR: Número de paràmetres incorrecte d'ús.";
+    public static final String COMANDA = "ERROR: Comanda incorrecta.";
+    public static final String ADDCASA = "Ús: addCasa [nif] [nom] [superficie]";
+    public static final String ADDPLACA = "Ús: addPlaca [nif] [superficie] [preu] [potència]";
+    public static final String ADDAPARELL = "Ús: addAparell [nif] [descripció] [potència]";
+    public static final String ONCASA = "Ús: onCasa [nif]";
+    public static final String ONAPARELL = "Ús: onAparell [nif] [descripció aparell]";
+    public static final String OFFAPARELL = "Ús: offAparell [nif] [descripció aparell]";
+    public static final String LIST = "Ús: list";
+    public static final String INFO = "Ús: info [nif]";
+    public static final String QUIT = "Ús: quit";
 }

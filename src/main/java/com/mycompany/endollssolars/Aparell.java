@@ -11,20 +11,20 @@ package com.mycompany.endollssolars;
 public class Aparell {
 
     private String descripcio;
-    private float consum;
-    private String interruptor = "Activat";
+    private float potencia;
+    private String interruptor = "Apagat";
 
-    public Aparell(String descripcio, float consum) {
+    public Aparell(String descripcio, float potencia) {
         this.descripcio = descripcio;
-        this.consum = consum;
+        this.potencia = potencia;
     }
 
     public String getDescripcio() {
         return this.descripcio;
     }
 
-    public float getConsum() {
-        return this.consum;
+    public float getPotencia() {
+        return this.potencia;
     }
 
     public String getInterruptor() {
