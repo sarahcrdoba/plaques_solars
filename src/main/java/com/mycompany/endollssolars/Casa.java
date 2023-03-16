@@ -15,9 +15,9 @@ public class Casa {
     private String nif;
     private String nom;
     private float superficie;
-    private String interruptor = "Activat";
-    private ArrayList<Placa> placas = new ArrayList();
-    private ArrayList<Aparell> aparells = new ArrayList();
+    private boolean interruptor = true;
+    private ArrayList<Placa> placas = new ArrayList();      // lista donde iran las placas
+    private ArrayList<Aparell> aparells = new ArrayList();  // lista donde iran los aparatos
 
     public Casa(String nif, String nom, float superficie) {
         this.nif = nif;
@@ -37,166 +37,115 @@ public class Casa {
         return this.superficie;
     }
 
-    public String getInterruptor() {
+    public boolean getInterruptor() {
         return this.interruptor;
     }
 
-    public void addPlaca(Placa placa) {
-        System.out.println("OK: Placa afegida a la casa.");
+    public void addPlaca(Placa placa) {     // este metodo nos permite añadir una placa a la lista, dentro de la casa seleccionada       
         placas.add(placa);
     }
 
-    public void addAparell(Aparell aparell) {
-        System.out.println("OK: Aparell afegit a la casa.");
+    public void addAparell(Aparell aparell) {       // este metodo nos permite añadir un aparato a la lista, dentro de la casa seleccionada
         aparells.add(aparell);
     }
 
-    public void turnOnCasa(String estado) {
+    public void turnOnCasa(boolean estado) {     // nos cambia el estado del interruptor general
         this.interruptor = estado;
     }
 
-    public void turnOffAparells() {
+    public void turnOffAparells() {     // nos apaga todos los aparatos y la casa (en caso de caida de plomos)
+        this.interruptor = false;
         for (Aparell aparato : aparells) {
-            aparato.turnOffAparell("Apagat");
+            aparato.turnOffAparell(false);
         }
     }
 
-    public void findAparato(String descripcio, String comando, Casa cliente) {
-        float sumap = 0;
-        float sumaa = 0;
-        for (Placa placa : placas) {
-            sumap = sumap + placa.getPotencia();
-        }
-        for (Aparell aparato : aparells) {
-            if (aparato.getDescripcio().equalsIgnoreCase(descripcio)) {
-                if (comando.equalsIgnoreCase("onAparell")) {
-                    if (this.interruptor.equalsIgnoreCase("Activat")) {
-                        if ((aparato.getInterruptor()).equalsIgnoreCase("Apagat")) {
-                            aparato.turnOnAparell("Activat");
-                            for (Aparell aparatos : aparells) {
-                                if ((aparatos.getInterruptor()).equalsIgnoreCase("Activat")) {
-                                    sumaa = sumaa + aparato.getPotencia();
-                                }
-                            }
-                            if (sumaa > sumap) {
-                                cliente.turnOffAparells();
-                                this.interruptor = "Apagat";
-                                System.out.println(Condiciones.PLOMS_SALTATS);
-                            } else {
-                                System.out.println("OK: Aparell encès.");
-                            }
-                        }
-                    } else {
-                        System.out.println(Condiciones.APARELL_ENCES);
-                    }
-                } else {
-                    System.out.println(Condiciones.INTERRUPTOR_APAGAT);
-                }
+    public void onAparell(String comando, String descripcio) {      // nos enciende un aparato
+        Aparell encendre = null;
+        encendre.turnOnAparell(true);
+    }
 
-            } else if (comando.equalsIgnoreCase("offAparell")) {
-                if ((aparato.getInterruptor()).equalsIgnoreCase("Activat")) {
-                    aparato.turnOffAparell("Desactivat");
-                    System.out.println("OK: Aparell apagat.");
-                } else {
-                    System.out.println(Condiciones.APARELL_APAGAT);
-                }
+    public void offAparell(String comando, String descripcio) {     // nos apaga un aparato
+        Aparell apagar = null;
+        apagar.turnOffAparell(false);
+    }
+
+    public Aparell findAparell(String descripcio) {     // nos encuentra un aparato
+        for (Aparell aparato : aparells) {
+            if ((aparato.getDescripcio()).equalsIgnoreCase(descripcio)) {   // comprueba si el aparato ya existe
+                return aparato;
             }
         }
+        return null;
     }
 
-    public boolean comprobarPlaca(float placanueva) {
+    public boolean comprobarPlaca(float placanueva) {       // nos calcula el espacio para instalar placas
         boolean espacio = false;
-        double resta;
-        resta = superficie;
+        float restant = superficie;
         for (Placa unaPlaca : placas) {
-            resta = resta - unaPlaca.getSuperficie();
+            restant = restant - unaPlaca.getSuperficie();   // por cada placa vamos restando el espacio que ocupanen la casa
         }
-
-        if (placanueva > superficie && placanueva > resta) {
-            espacio = false;
+        restant = restant - placanueva;     //resta de la ultima placa para saber si cabe o no
+        if (restant < 0) {     // si la superficie restante es menor a 0, entonces la placa ocupa más sitio del que puede
+            espacio = false;    
         } else {
-            espacio = true;
+            espacio = true; 
         }
-        return espacio;
+        return espacio;     // nos devuelve si cabe o no
     }
 
-    public String comprobarAparell(String nom) {
-        int indice1 = 0;
-        for (Aparell aparato : aparells) {
-            if (!(nom.equalsIgnoreCase(aparato.getDescripcio()))) {
-                indice1 = indice1 + 1;
-            }
-        }
-        if (aparells.size() == indice1) {
-            nom = "registrar";
-        } else {
-            nom = "registrado";
-        }
-        return nom;
+    public int totalPlaca() {   // nos devuelve el numero de placas
+        return placas.size();
     }
 
-    public void listCasa() {
-        double resta;
-        resta = superficie;
-        for (Placa unaPlaca : placas) {
-            resta = resta - unaPlaca.getSuperficie();
-        }
-
-        System.out.println("Client: " + nif + " - " + nom);
-        System.out.println("Superfície de teulada: " + superficie);
-        System.out.println("Superfície disponible: " + resta);
-        System.out.println("Interruptor general: " + interruptor);
-        if (placas.size() > 0) {
-            System.out.println("Plaques solars instal·lades: " + placas.size());
-        } else {
-            System.out.println("No té plaques solars instal·lades.");
-        }
-        if (aparells.size() > 0) {
-            System.out.println("Aparells registrats: " + aparells.size());
-        } else {
-            System.out.println("No té cap aparell elèctric registrat.");
-        }
+    public int totalAparell() {  // nos devuelve el numero de aparatos
+        return aparells.size();
     }
 
-    public void infoCasa() {
-        float suma = 0;
-        float inversio = 0;
-        float consum = 0;
-        String nombre = "a";
+    public float superficieRestant() {  // nos devuelve la superficie disponible en la casa
+        float restant;
+        float total = 0;
         for (Placa placa : placas) {
-            suma = suma + placa.getPotencia();
+            total = total + placa.getSuperficie();
+        }
+        restant = superficie - total;
+        return restant;
+    }
+
+    public float potenciaTotal() {  // nos devuelve la potencia total de una casa
+        float potencia = 0;
+        for (Placa placa : placas) {
+            potencia = potencia + placa.getPotencia();
+        }
+        return potencia;
+    }
+
+    public float inversioTotal() {  // nos devuelve el dinero invertido total
+        float inversio = 0;
+        for (Placa placa : placas) {
             inversio = inversio + placa.getPreu();
         }
-        for (Aparell aparato: aparells){
-        if ((aparato.getInterruptor()).equalsIgnoreCase("Activat")){
-            consum = consum + aparato.getPotencia();
-            nombre = aparato.getDescripcio();
-        }
+        return inversio;
     }
-        System.out.println("Client: " + nif + " - " + nom);
-        if (placas.size() > 0) {
-            System.out.println("Plaques solars instal·lades: " + placas.size());
-        } else {
-            System.out.println("No té plaques solars instal·lades.");
-        }
-        System.out.println("Potència total: " + suma + "W");
-        System.out.println("Inversió total: " + inversio + "€");
-        if (aparells.size() > 0) {
-            System.out.println("Aparells registrats: " + aparells.size());
-        } else {
-            System.out.println("No té cap aparell elèctric registrat.");
-        }
-        System.out.println("Consum actual: " + consum + "W");
-        
-        if (consum > 0){
-            System.out.println("Aparells encesos:");
-            for (Aparell aparato : aparells){
-                if ((aparato.getInterruptor()).equalsIgnoreCase("Activat")) {
-                    System.out.println("    -" + aparato.getDescripcio());
-                }
+
+    public float consumTotal() {    // nos devuelve el consumo total de los aparatos encendidos
+        float consum = 0;
+        for (Aparell aparell : aparells) {
+            if (aparell.getInterruptor() == true) {
+            consum = consum + aparell.getPotencia();
             }
         }
-        
+        return consum;
+    }
+
+    public ArrayList aparellsEncesos() {    // nos devuelve los aparatos encendidos en una casa
+        ArrayList<String> encesos = new ArrayList();
+        for (Aparell aparell : aparells) {
+            if (aparell.getInterruptor() == true) {
+                encesos.add(aparell.getDescripcio());
+            }
+        }
+        return encesos;
     }
 
 }

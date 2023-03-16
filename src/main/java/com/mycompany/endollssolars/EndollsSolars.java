@@ -14,183 +14,291 @@ import java.util.ArrayList;
  */
 public class EndollsSolars {
 
+    static BaseDades bd = new BaseDades();     // instancia para llamar a la base de datos
+
     public static void main(String[] args) throws IOException {
         BufferedReader Consola = new BufferedReader(new InputStreamReader(System.in));
-        ArrayList<Casa> casas = new ArrayList();
 
-        String comando;
+        String comando;     // variable del input
 
-        do {
+        do {        // hará todo el main mientras se cumpla la condicion
             System.out.print("> ");
             comando = Consola.readLine();
-            String[] parts = comando.split(" ");
-            String orden = parts[0];
+            String[] parts = comando.split(" ");    // nos permite separar el comando en partes
+            String orden = parts[0];    // variable del comando principal
 
-            if (parts[0].equalsIgnoreCase("addCasa") || parts[0].equalsIgnoreCase("addPlaca") || parts[0].equalsIgnoreCase("addAparell") || parts[0].equalsIgnoreCase("onCasa")
-                    || parts[0].equalsIgnoreCase("onAparell") || parts[0].equalsIgnoreCase("offAparell") || parts[0].equalsIgnoreCase("list") || parts[0].equalsIgnoreCase("info")
-                    || parts[0].equalsIgnoreCase("quit")) {
+            switch (orden.toLowerCase()) {        // se le pasa una orden (ej addcasa) y el switch nos enviará al caso con ese nombre
 
-                switch (orden) {
+                case "addcasa":
+                    if (parts.length == 4) {    // le decimos que el comando tiene que tener 4 elementos para hacerse correctamente
+                        addCasa(parts[1], parts[2], parts[3]);
+                    } else {
+                        System.out.println(Condiciones.PARAMETRES + Condiciones.ADDCASA);   // error comando mal estructurado
+                    }
+                    break;      // el break nos permite salir del caso para poder pedir otro comando
 
-                    case "addCasa":
-                        int indice = 0;
-                        if (parts.length == 4) {
-                            float part3 = Float.parseFloat(parts[3]);
-                            for (Casa cliente : casas) {
-                                if (!(cliente.getNif()).equalsIgnoreCase(parts[1])) {
-                                    indice = indice + 1;
-                                }
-                            }
-                            if (casas.size() == indice) {
-                                if (part3 >= 10) {
-                                    Casa nueva = new Casa(parts[1], parts[2], part3);
-                                    casas.add(nueva);
-                                    System.out.println("OK: Casa registrada.");
-                                } else {
-                                    System.out.println(Condiciones.SUPERFICIE_CASA);
-                                }
-                            } else {
-                                System.out.println(Condiciones.CASA_REGISTRADA);
-                            }
-                        } else {
-                            System.out.println(Condiciones.PARAMETRES + Condiciones.ADDCASA);
-                        }
+                case "addplaca":
+                    if (parts.length == 5) {
+                        addPlaca(parts[1], parts[2], parts[3], parts[4]);
+                    } else {
+                        System.out.println(Condiciones.PARAMETRES + Condiciones.ADDPLACA);
+                    }
+                    break;
+
+                case "addaparell":
+                    if (parts.length == 4) {
+                        addAparell(parts[1], parts[2], parts[3]);
+                    } else {
+                        System.out.println(Condiciones.PARAMETRES + Condiciones.ADDAPARELL);
+                    }
+                    break;
+
+                case "oncasa":
+                    if (parts.length == 2) {
+                        onCasa(parts[1]);
+                    } else {
+                        System.out.println(Condiciones.COMANDA + Condiciones.ONCASA);
+                    }
+                    break;
+
+                case "onaparell":
+                    if (parts.length == 3) {
+                        onAparell(parts[1], parts[2]);
+                    } else {
+                        System.out.println(Condiciones.PARAMETRES + Condiciones.ONAPARELL);
+                    }
+                    break;
+
+                case "offaparell":
+                    if (parts.length == 3) {
+                        offAparell(parts[1], parts[2]);
+                    } else {
+                        System.out.println(Condiciones.PARAMETRES + Condiciones.OFFAPARELL);
+                    }
+                    break;
+
+                case "list":
+                    if (parts.length == 1) {
+                        list();
+                    } else {
+                        System.out.println(Condiciones.PARAMETRES + Condiciones.LIST);
+                    }
+                    break;
+
+                case "info":
+                    if (parts.length == 2) {
+                        info(parts[1]);
+                    } else {
+                        System.out.println(Condiciones.PARAMETRES + Condiciones.INFO);
+                    }
+                    break;
+                    
+                case "quit":
+                    if (parts.length == 1) {
                         break;
+                    } else {
+                        System.out.println(Condiciones.PARAMETRES + Condiciones.QUIT);
+                    }
 
-                    case "addPlaca":
-                        if (parts.length == 5) {
-                            String nif = parts[1];
-                            float part1 = Float.parseFloat(parts[2]);
-                            float part2 = Float.parseFloat(parts[3]);
-                            float parte3 = Float.parseFloat(parts[4]);
-
-                            if (part1 > 0 && part2 > 0 && parte3 > 0) {
-
-                                Placa añadir = new Placa(part1, part2, parte3);
-                                for (Casa cliente : casas) {
-                                    if (nif.equalsIgnoreCase(cliente.getNif())) {
-                                        if (cliente.comprobarPlaca(part1) == false) {
-                                            System.out.println(Condiciones.ESPAI_PLACA);
-                                        } else {
-                                            cliente.addPlaca(añadir);
-                                        }
-                                    } else {
-                                        System.out.println(Condiciones.CASA_NOREGISTRADA);
-                                    }
-                                }
-                            } else {
-                                if (part1 <= 0) {
-                                    System.out.println(Condiciones.SUPERFICIE_CASA);
-                                } else if (part2 <= 0) {
-                                    System.out.println(Condiciones.PREU_PLACA);
-                                } else if (parte3 <= 0) {
-                                    System.out.println(Condiciones.POTENCIA);
-                                }
-                            }
-                        } else {
-                            System.out.println(Condiciones.PARAMETRES + Condiciones.ADDPLACA);
-                        }
-                        break;
-
-                    case "addAparell":
-                        if (parts.length == 4) {
-                        String nom = parts[2];
-                        float potencia = Float.parseFloat(parts[3]);
-                        for (Casa cliente : casas) {
-                            if (parts[1].equalsIgnoreCase(cliente.getNif())) {
-                                if ((cliente.comprobarAparell(nom)).equalsIgnoreCase("registrar")) {
-                                    if (potencia > 0) {
-                                        Aparell nuevo = new Aparell(nom, potencia);
-                                        cliente.addAparell(nuevo);
-                                    } else {
-                                        System.out.println(Condiciones.POTENCIA);
-                                    }
-                                } else {
-                                    System.out.println(Condiciones.APARELL_REGISTRAT);
-                                }
-                            } else {
-                                System.out.println(Condiciones.CASA_NOREGISTRADA);
-                            }
-                        }
-                        } else {
-                            System.out.println(Condiciones.PARAMETRES + Condiciones.ADDAPARELL);
-                        }
-
-                            break;
-                        
-                    case "onCasa":
-                        if (parts.length == 2) {
-                        for (Casa cliente : casas) {
-                            if (parts[1].equalsIgnoreCase(cliente.getNif())) {
-                                if ((cliente.getInterruptor()).equalsIgnoreCase("Activat")) {
-                                    System.out.println(Condiciones.CASA_ENCESA);
-                                } else {
-                                    cliente.turnOnCasa("Activat");
-                                    System.out.println("OK: Interruptor general activat.");
-                                }
-                            } else {
-                                System.out.println(Condiciones.CASA_NOREGISTRADA);
-                            }
-                        }
-                        } else {
-                            System.out.println(Condiciones.COMANDA + Condiciones.ONCASA);
-                        }
-                        break;
-
-                    case "onAparell":
-                        if (parts.length == 3) {
-                        for (Casa cliente : casas) {
-                            if (parts[1].equalsIgnoreCase(cliente.getNif())) {
-                                cliente.findAparato(parts[2], parts[0], cliente);
-                            }
-                        }
-                        } else {
-                            System.out.println(Condiciones.PARAMETRES + Condiciones.ONAPARELL);
-                        }
-                        break;
-
-                    case "offAparell":
-                        if (parts.length == 3 ) {
-                        for (Casa cliente : casas) {
-                            if (parts[1].equalsIgnoreCase(cliente.getNif())) {
-                                cliente.findAparato(parts[2], parts[0], cliente);
-                            } else {
-                                System.out.println(Condiciones.CASA_NOREGISTRADA);
-                            }
-                        }
-                        } else{
-                            System.out.println(Condiciones.PARAMETRES + Condiciones.OFFAPARELL);
-                        }
-                        break;
-
-                    case "list":
-                        if (!casas.isEmpty()){
-                        int contador = 0;
-                        System.out.println("--- Endolls Solars, S.L. ---");
-                        System.out.println("Cases enregistrades: " + casas.size());
-                        System.out.println(" ");
-                        for (Casa cliente : casas) {
-                            contador = contador + 1;
-                            System.out.println("Casa" + " " +contador);
-                            cliente.listCasa();
-                            System.out.println(" ");
-                        }
-                        } else {
-                            System.out.println("No hi ha cases registrades.");
-                        }
-                        break;
-
-                    case "info":
-                        for (Casa cliente : casas) {
-                            if (parts[1].equalsIgnoreCase(cliente.getNif())) {
-                                cliente.infoCasa();
-                            }else {
-                System.out.println(Condiciones.COMANDA);
-                        }
-                        break;
-                }
-            } 
+                default:
+                    System.out.println(Condiciones.COMANDA);
             }
-        }while (!comando.equalsIgnoreCase("quit"));
+
+        } while (!comando.equalsIgnoreCase("quit"));        // final del do: mientras el comando no sea quit
     }
+
+    public static void addCasa(String nif, String nom, String superficie) {
+        Casa cliente = bd.trobarNif(nif);       // variable para trabajar sobre una casa de la base de datos
+        if (cliente == null) {      // comprobamos que la casa no está registrada
+            if (Float.parseFloat(superficie) >= 10) {  
+                Casa nueva = new Casa(nif, nom, Float.parseFloat(superficie));
+                bd.afegirCasa(nueva);       // método que añade una casa
+                System.out.println("OK: Casa registrada.");
+            } else {
+                System.out.println(Condiciones.SUPERFICIE_CASA);   
+            }
+        } else {
+            System.out.println(Condiciones.CASA_REGISTRADA);   
+        }
+    }
+
+    public static void addPlaca(String nif, String superficie, String preu, String potencia) {
+        Casa cliente = bd.trobarNif(nif);
+        Float part2 = Float.valueOf(superficie);
+        Float part3 = Float.valueOf(preu);
+        Float part4 = Float.valueOf(potencia);
+
+        if (part2 > 0 && part3 > 0 && part4 > 0) {     // supercicie, precio y potencia han de ser mayores a 0
+            Placa nueva = new Placa(part2, part3, part4);
+            if (cliente != null) {      // comprobamos que la casa existe
+                if (cliente.comprobarPlaca(part2) == true) {    // método que comprueba si hay espacio        
+                    cliente.addPlaca(nueva);
+                    System.out.println("OK: Placa afegida a la casa.");
+                } else {
+                    System.out.println(Condiciones.ESPAI_PLACA);
+                }
+            } else {
+                System.out.println(Condiciones.CASA_NOREGISTRADA);
+            }
+        } else {    // en este else ponemos los errores correspondientes a la superficie, precio y potencia
+            if (part2 <= 0) {
+                System.out.println(Condiciones.SUPERFICIE_CASA);
+            } else if (part3 <= 0) {
+                System.out.println(Condiciones.PREU_PLACA);
+            } else if (part4 <= 0) {
+                System.out.println(Condiciones.POTENCIA);
+            }
+        }
+    }
+
+    public static void addAparell(String nif, String descripcio, String potencia) {
+        Casa cliente = bd.trobarNif(nif);
+        if (cliente != null) {
+            if (cliente.findAparell(descripcio) == null) {    // llamamos al metodo en casa que nos dice si el aparato existe
+                if (Float.parseFloat(potencia) > 0) {
+                    Aparell nuevo = new Aparell(descripcio, Float.parseFloat(potencia));
+                    cliente.addAparell(nuevo);
+                    System.out.println("OK: Aparell afegit a la casa.");
+                } else {
+                    System.out.println(Condiciones.POTENCIA);   
+                }
+            } else {
+                System.out.println(Condiciones.APARELL_REGISTRAT);  
+            }
+
+        } else {
+            System.out.println(Condiciones.CASA_NOREGISTRADA);  
+        }
+    }
+
+    public static void onCasa(String nif) {
+        Casa cliente = bd.trobarNif(nif);
+        if (cliente != null) {
+            if (cliente.getInterruptor() == true) {       // si el interruptor general esta encendido
+                System.out.println(Condiciones.CASA_ENCESA);      // dará el error, la casa ya está encendida
+            } else {
+                cliente.turnOnCasa(true);      // activa la casa
+                System.out.println("OK: Interruptor general activat.");
+            }
+        } else {
+            System.out.println(Condiciones.CASA_NOREGISTRADA);
+        }
+    }
+
+    public static void onAparell(String nif, String descripcio) {
+        Casa cliente = bd.trobarNif(nif);
+        if (cliente != null) {
+            Aparell encendre = cliente.findAparell(descripcio);     // comprobamos si el aparato existe
+            if (encendre != null) {
+                if (cliente.getInterruptor() == true) {      // el interruptor general tiene que estar encendido
+                    if (encendre.getInterruptor() == false) {       // el aparato tiene que estar apagado
+                        encendre.turnOnAparell(true);
+                        if (cliente.consumTotal() > cliente.potenciaTotal()) {  // comprobamos si saltan los plomos
+                            cliente.turnOffAparells();      // método que apaga la casa
+                            System.out.println(Condiciones.PLOMS_SALTATS);
+                        } else {
+                            System.out.println("OK: Aparell encés.");
+                        }
+                    } else {
+                        System.out.println(Condiciones.APARELL_ENCES);  
+                    }
+                } else {
+                    System.out.println(Condiciones.INTERRUPTOR_APAGAT);
+                }
+            } else {
+                System.out.println(Condiciones.APARELL_NOREGISTRAT);
+            }
+        } else {
+            System.out.println(Condiciones.CASA_NOREGISTRADA);
+        }
+    }
+
+    public static void offAparell(String nif, String descripcio) {
+        Casa cliente = bd.trobarNif(nif);
+        if (cliente != null) {
+            Aparell apagar = cliente.findAparell(descripcio);   // comprobamos si el aparato existe
+            if (apagar != null) {
+                if (apagar.getInterruptor() == true) {      // el aparato tiene que estar encendido
+                    apagar.turnOffAparell(false);
+                    System.out.println("OK: Aparell apagat.");
+                } else {
+                    if (apagar.getInterruptor() == false) {     // aparato que ya está apagado
+                        System.out.println(Condiciones.APARELL_APAGAT);
+                    }
+                }
+            } else {
+                if (cliente.findAparell(descripcio) == null) {     // no ha encontrado ningun aparato
+                    System.out.println(Condiciones.APARELL_NOREGISTRAT);
+                }
+            }
+        } else {
+            System.out.println(Condiciones.CASA_NOREGISTRADA);
+        }
+    }
+
+    public static void list() {
+        ArrayList<Casa> casas = bd.getBd();     // creamos una arraylist con el método de la base de datos para poder utilizar las casas
+        if (!casas.isEmpty()) {      // comprobamos que la lista de casas no esté vacia
+            int contador = 0;
+            System.out.println("--- Endolls Solars, S.L. ---");
+            System.out.println("Cases enregistrades: " + casas.size() + "\n");     // total de casas registradas
+            for (Casa cliente : casas) {
+                 contador = contador + 1;        // contador para numerar las casas registradas
+                System.out.println("Casa" + " " + contador);             
+                System.out.println("Client: " + cliente.getNif() + " - " + cliente.getNom());
+                System.out.println("Superfície de teulada: " + cliente.getSuperficie());
+                System.out.println("Superfície disponible: " + cliente.superficieRestant());
+                if (cliente.getInterruptor() == true) {     // creamos 2 mensajes para que no nos salga true/false
+                System.out.println("Interruptor general: encès");
+                } else {
+                    System.out.println("Interruptor general: apagat");
+                }
+                if (cliente.totalPlaca() > 0) {     // comprobamos si tiene placas instaladas
+                    System.out.println("Plaques solars instal·lades: " + cliente.totalPlaca());
+                } else {
+                    System.out.println("No té plaques solars instal·lades.");
+                }
+                if (cliente.totalAparell() > 0) {       // comprobamos si tiene aparatos registrados
+                    System.out.println("Aparells registrats: " + cliente.totalAparell() + "\n");
+                } else {
+                    System.out.println("No té cap aparell elèctric registrat. \n");
+                }
+            }
+        } else {
+            System.out.println("No hi ha cases registrades.");
+        }
+    }
+
+    public static void info(String nif) {
+        Casa cliente = bd.trobarNif(nif);
+        if (cliente != null) {
+        ArrayList<String> encesos = cliente.aparellsEncesos();  // aquí guardamos los aparatos encendidos ya que no necesitamos los apagados          
+            System.out.println("Client: " + nif + " - " + cliente.getNom());
+            if (cliente.totalPlaca() > 0) {     // comprobamos si tiene placas instaladas
+                System.out.println("Plaques solars instal·lades: " + cliente.totalPlaca());
+            } else {
+                System.out.println("No té plaques solars instal·lades.");
+            }
+            System.out.println("Potència total: " + cliente.potenciaTotal() + "W");
+            System.out.println("Inversió total: " + cliente.inversioTotal() + "€");
+            if (cliente.totalAparell() > 0) {   // comprobamos si tiene aparatos registrados
+                System.out.println("Aparells registrats: " + cliente.totalAparell());
+            } else {
+                System.out.println("No té cap aparell elèctric registrat.");
+            }
+            System.out.println("Consum actual: " + cliente.consumTotal() + "W");
+
+            if (cliente.consumTotal() > 0) {    // si el consumo es mayor a 0 hay aparatos encendidos
+                System.out.println("Aparells encesos:");
+                for (String aparells : encesos) {       // bucle de aparatos encendidos
+                    System.out.println("    -" + aparells);
+                }
+            } else {
+                System.out.println(" ");    // si no hay nada encendido, que no haga el print de arriba
+            }
+        } else {
+            System.out.println(Condiciones.CASA_NOREGISTRADA);
+        }
+    }
+
 }

@@ -12,7 +12,7 @@ public class Aparell {
 
     private String descripcio;
     private float potencia;
-    private String interruptor = "Apagat";
+    private boolean interruptor = false;
 
     public Aparell(String descripcio, float potencia) {
         this.descripcio = descripcio;
@@ -27,15 +27,15 @@ public class Aparell {
         return this.potencia;
     }
 
-    public String getInterruptor() {
+    public boolean getInterruptor() {
         return this.interruptor;
     }
 
-    public void turnOnAparell(String estado) {
+    public void turnOnAparell(boolean estado) {     // cambia el estado al encender el aparato
         this.interruptor = estado;
     }
     
-    public void turnOffAparell(String estado) {
+    public void turnOffAparell(boolean estado) {    // cambia el estado al apagar el aparato
         this.interruptor = estado;
     }
 }
