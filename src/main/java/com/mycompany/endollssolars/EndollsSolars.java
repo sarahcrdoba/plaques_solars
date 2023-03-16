@@ -3,6 +3,10 @@
  */
 package com.mycompany.endollssolars;
 
+import com.mycompany.endollssolars.errors.Condiciones;
+import com.mycompany.endollssolars.model.Placa;
+import com.mycompany.endollssolars.model.Casa;
+import com.mycompany.endollssolars.model.Aparell;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;

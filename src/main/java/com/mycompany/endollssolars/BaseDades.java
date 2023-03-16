@@ -4,6 +4,7 @@
  */
 package com.mycompany.endollssolars;
 
+import com.mycompany.endollssolars.model.Casa;
 import java.util.ArrayList;
 
 /**
